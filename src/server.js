@@ -83,12 +83,12 @@ app.get('/login/facebook/return',
   },
 );
 
-// 
+//
 // Register knex database middleware
 // -----------------------------------------------------------------------------
-app.use((function() { 
+app.use((() => {
   const db = knex(config.mySQL);
-  return function(req, res, next) {
+  return (req, res, next) => {
     req.db = db;
     next();
   };

@@ -1,24 +1,23 @@
-import { GraphQLList as List } from 'graphql';
-import PageType from '../types/PageType';
 
-const page = {
-  type: new List(PageType),
+import { GraphQLList as List } from 'graphql';
+import Role from '../types/RoleType';
+
+const Roles = {
+  type: new List(Role),
   parseData(item) {
     return {
       id: item.id,
-      parentId: item.parent_id,
-      ordering: item.ordering,
-      displayName: item.display_name,
+      name: item.name,
     };
   },
   resolve({ request }) {
     const req = request;
-    const task = req.db('page')
+    const task = req.db('user_role')
     .select('*')
     .then((rows) => {
       const items = [];
       rows.map((item) => {
-        items.push(page.parseData(item));
+        items.push(item);
         return item;
       });
       return items;
@@ -27,4 +26,5 @@ const page = {
   },
 };
 
-export default page;
+export default Roles;
+

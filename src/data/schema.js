@@ -15,6 +15,9 @@ import {
 import me from './queries/me';
 import news from './queries/news';
 import page from './queries/page';
+import userAccount from './queries/userAccounts';
+import role from './queries/roles';
+import login from './queries/login';
 
 const schema = new Schema({
   query: new ObjectType({
@@ -23,6 +26,9 @@ const schema = new Schema({
       me,
       news,
       page,
+      userAccount,
+      role,
+      login,
     },
   }),
 });

@@ -9,21 +9,19 @@
 
 import {
   GraphQLObjectType as ObjectType,
-  GraphQLID as ID,
+  GraphQLInt as IntType,
   GraphQLString as StringType,
   GraphQLNonNull as NonNull,
-  GraphQLList as ListType,
 } from 'graphql';
-import RoleType from './RoleType';
 
-const UserType = new ObjectType({
-  name: 'User',
+const PageType = new ObjectType({
+  name: 'Page',
   fields: {
-    id: { type: new NonNull(ID) },
-    account: { type: new NonNull(StringType) },
-    email: { type: StringType },
-    roles: { type: new ListType(RoleType) },
+    id: { type: new NonNull(IntType) },
+    parentId: { type: new NonNull(IntType) },
+    ordering: { type: IntType },
+    displayName: { type: StringType },
   },
 });
 
-export default UserType;
+export default PageType;

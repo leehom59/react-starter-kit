@@ -1,24 +1,24 @@
-import { GraphQLList as List } from 'graphql';
-import PageType from '../types/PageType';
 
-const page = {
-  type: new List(PageType),
+import { GraphQLList as List } from 'graphql';
+import UserAccount from '../types/UserAccountType';
+
+const userAccounts = {
+  type: new List(UserAccount),
   parseData(item) {
     return {
       id: item.id,
-      parentId: item.parent_id,
-      ordering: item.ordering,
-      displayName: item.display_name,
+      account: item.account,
+      email: item.email,
     };
   },
   resolve({ request }) {
     const req = request;
-    const task = req.db('page')
+    const task = req.db('user_account')
     .select('*')
     .then((rows) => {
       const items = [];
       rows.map((item) => {
-        items.push(page.parseData(item));
+        items.push(item);
         return item;
       });
       return items;
@@ -27,4 +27,5 @@ const page = {
   },
 };
 
-export default page;
+export default userAccounts;
+

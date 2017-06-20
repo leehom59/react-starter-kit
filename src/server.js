@@ -15,6 +15,7 @@ import expressJwt, { UnauthorizedError as Jwt401Error } from 'express-jwt';
 import expressGraphQL from 'express-graphql';
 import jwt from 'jsonwebtoken';
 import React from 'react';
+import knex from 'knex';
 import ReactDOM from 'react-dom/server';
 import PrettyError from 'pretty-error';
 import App from './components/App';
@@ -22,13 +23,12 @@ import Html from './components/Html';
 import { ErrorPageWithoutStyle } from './routes/error/ErrorPage';
 import errorPageStyle from './routes/error/ErrorPage.css';
 import createFetch from './createFetch';
-import passport from './passport';
+import passport from './core/passport/passport';
 import router from './router';
 import models from './data/models';
 import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
-import knex from 'knex';
 
 const app = express();
 
@@ -46,6 +46,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+// inject mysql instance
+app.use((() => {
+  const db = knex(config.mySQL);
+  return (req, res, next) => {
+    req.db = db;
+    next();
+  };
+})());
+// inject graphql schema
+app.use((req, res, next) => {
+  req.schema = schema;
+  next();
+});
 
 //
 // Authentication
@@ -65,34 +78,16 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
   next(err);
 });
 
-app.use(passport.initialize());
+app.post('/login',
+  passport.authenticate('local', { failureRedirect: '/login', session: false }),
+  (req, res) => {
+    res.send('new hash(profile)store in cookie');
+  },
+);
 
 if (__DEV__) {
   app.enable('trust proxy');
 }
-app.get('/login/facebook',
-  passport.authenticate('facebook', { scope: ['email', 'user_location'], session: false }),
-);
-app.get('/login/facebook/return',
-  passport.authenticate('facebook', { failureRedirect: '/login', session: false }),
-  (req, res) => {
-    const expiresIn = 60 * 60 * 24 * 180; // 180 days
-    const token = jwt.sign(req.user, config.auth.jwt.secret, { expiresIn });
-    res.cookie('id_token', token, { maxAge: 1000 * expiresIn, httpOnly: true });
-    res.redirect('/');
-  },
-);
-
-//
-// Register knex database middleware
-// -----------------------------------------------------------------------------
-app.use((() => {
-  const db = knex(config.mySQL);
-  return (req, res, next) => {
-    req.db = db;
-    next();
-  };
-})());
 
 //
 // Register API middleware

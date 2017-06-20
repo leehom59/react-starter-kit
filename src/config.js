@@ -28,6 +28,17 @@ module.exports = {
   // Database
   databaseUrl: process.env.DATABASE_URL || 'sqlite:database.sqlite',
 
+  // MySQL
+  mySQL: {
+    client: 'mysql',
+    connection: {
+      host: '127.0.0.1',
+      user: 'root',
+      password: '12345',
+      database: 'pas_admin',
+    },
+  },
+
   // Web analytics
   analytics: {
     // https://analytics.google.com/

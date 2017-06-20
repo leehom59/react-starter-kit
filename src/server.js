@@ -28,6 +28,7 @@ import models from './data/models';
 import schema from './data/schema';
 import assets from './assets.json'; // eslint-disable-line import/no-unresolved
 import config from './config';
+import knex from 'knex';
 
 const app = express();
 
@@ -81,6 +82,17 @@ app.get('/login/facebook/return',
     res.redirect('/');
   },
 );
+
+// 
+// Register knex database middleware
+// -----------------------------------------------------------------------------
+app.use((function() { 
+  const db = knex(config.mySQL);
+  return function(req, res, next) {
+    req.db = db;
+    next();
+  };
+})());
 
 //
 // Register API middleware

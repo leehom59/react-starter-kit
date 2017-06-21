@@ -1,0 +1,78 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+body {
+    font-size: 16px;
+    font-family: "Noto Sans CJK TC", "Microsoft JhengHei",Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+input,
+select:focus,
+textarea {
+  font-size: 16px !important;
+}
+.ant-modal-body {
+    font-size: 16px;
+}
+.addthis_inline_share_toolbox, .addthis_inline_share_toolbox_51a9 {
+    display: inline-block;
+}
+.ant-modal-mask {
+    z-index: 97 !important;
+}
+.ant-modal-wrap  {
+    z-index: 98 !important;
+}
+.ant-modal-close {
+    padding: 4px;
+    border: 1px #BD071D solid;
+    background-color: #BD071D;
+    border-radius: 12px;
+    color: white;
+    right: -12px;
+    top: -12px;
+    z-index: 99 !important;
+}
+.ant-modal-close:hover {
+    color: white;
+}
+.ant-modal-close.fixed {
+    top: 2px;
+    right: -30px;
+}
+.ant-select-search__field__placeholder, .ant-select-selection__placeholder {
+    color: #aaa;
+}
+.ant-modal-wrap {
+    -webkit-overflow-scrolling: touch !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+#PopUpFixedBtn {
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+#PopUpFixedBtn.show {
+    display: block;
+    opacity: 1;
+}
+.atss {
+    z-index: 90 !important;
+}
+.detailFloor {
+    color: #BD071D;
+}
+@media (max-width: 768px) {
+    .ant-modal-close.fixed {
+        top: 2px;
+        right: -2px;
+    }
+}
+@media (max-width: 414px) {
+    .at-style-responsive .at-share-btn {
+        padding: 8px !important;
+    }
+    .at-style-responsive .at-icon-wrapper {
+        border-radius: 16px !important;
+    }
+}

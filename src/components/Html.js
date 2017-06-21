@@ -10,6 +10,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'serialize-javascript';
+import 'antd/dist/antd.css';
 import config from '../config';
 
 /* eslint-disable react/no-danger */
@@ -42,8 +43,13 @@ class Html extends React.Component {
           <title>{title}</title>
           <meta name="description" content={description} />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <script src="https://unpkg.com/moment/min/moment-with-locales.js" />
+          <script src="./iconfont.js" />
           {scripts.map(script => <link key={script} rel="preload" href={script} as="script" />)}
           <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+          <link rel="stylesheet" href="/antd.min.css" />
+          <link rel="stylesheet" href="/antd.theme.css" />
+          <link rel="stylesheet" href="/fonts/kbfont.css" />
           {styles.map(style => (
             <style
               key={style.id}
@@ -51,6 +57,7 @@ class Html extends React.Component {
               dangerouslySetInnerHTML={{ __html: style.cssText }}
             />
           ))}
+          <link rel="stylesheet" href="./iconfont.css" />
         </head>
         <body>
           <div id="app" dangerouslySetInnerHTML={{ __html: children }} />

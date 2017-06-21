@@ -22,6 +22,11 @@ const routes = {
     },
 
     {
+      path: '/account',
+      load: () => import(/* webpackChunkName: 'account' */ './account'),
+    },
+
+    {
       path: '/login',
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
@@ -38,8 +43,8 @@ const routes = {
     const route = await next();
 
     // Provide default values for title, description etc.
-    route.title = `${route.title || 'Untitled Page'}`;
-    route.description = route.description || '';
+    route.title = route.title || '管理後台';
+    route.description = route.description || '管理後台';
 
     return route;
   },

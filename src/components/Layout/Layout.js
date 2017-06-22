@@ -16,7 +16,7 @@ class OurLayout extends React.Component {
     return (
       <Layout>
         <Header />
-        <Layout>
+        <Layout style={{ width: '100%', float: 'left' }}>
           <Navigation />
           <Layout style={{ padding: '0 24px 24px' }}>
             <Breadcrumb />
@@ -26,10 +26,11 @@ class OurLayout extends React.Component {
                 padding: 24,
                 margin: 0,
                 minHeight: 280,
+                width: '80%',
+                float: 'left',
               }}
             >
               {this.props.children}
-              <div> test UI </div>
             </Content>
           </Layout>
         </Layout>

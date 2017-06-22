@@ -142,11 +142,11 @@ app.get('*', async (req, res, next) => {
       { id: 'css', cssText: [...css].join('') },
     ];
     data.scripts = [];
-    // data.scripts = [assets.vendor.js];
-    // if (route.chunks) {
-    //   data.scripts.push(...route.chunks.map(chunk => assets[chunk].js));
-    // }
-    // data.scripts.push(assets.client.js);
+    data.scripts = [assets.vendor.js];
+    if (route.chunks) {
+      data.scripts.push(...route.chunks.map(chunk => assets[chunk].js));
+    }
+    data.scripts.push(assets.client.js);
     data.app = {
       apiUrl: config.api.clientUrl,
     };

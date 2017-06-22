@@ -16,7 +16,7 @@ const { Sider } = Layout;
 class Navigation extends React.Component {
   render() {
     return (
-      <Sider width={200} style={{ background: '#fff', float: 'left', margin: '0 20px 0' }}>
+      <Sider width={200} style={{ background: '#fff', float: 'left', width: '20%' }}>
         <Menu
           mode="inline"
           defaultSelectedKeys={['1']}

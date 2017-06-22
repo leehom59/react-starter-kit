@@ -1,16 +1,16 @@
 import React from 'react';
 import { Table } from 'antd';
-import 'isomorphic-fetch';
+import Link from '../../components/Link';
 
 const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
+  title: 'Id',
+  dataIndex: 'id',
   sorter: true,
-  render: name => `${name.first} ${name.last}`,
+  // render: name => `${name.first} ${name.last}`,
   width: '20%',
 }, {
-  title: 'Gender',
-  dataIndex: 'gender',
+  title: 'Account',
+  dataIndex: 'account',
   filters: [
     { text: 'Male', value: 'male' },
     { text: 'Female', value: 'female' },
@@ -19,6 +19,21 @@ const columns = [{
 }, {
   title: 'Email',
   dataIndex: 'email',
+}, {
+  title: 'Action',
+  key: 'action',
+  render: (text, record) => (
+    <span>
+      <Link to="/account/detail" title="編輯">
+        編輯
+      </Link>
+      <span className="ant-divider" />
+      <Link to="/account/delete" title="刪除">
+        刪除
+      </Link>
+      <span className="ant-divider" />
+    </span>
+  ),
 }];
 
 class AccountList extends React.Component {
@@ -27,13 +42,16 @@ class AccountList extends React.Component {
     pagination: {},
     loading: false,
   };
+  componentDidMount() {
+    this.refresh();
+  }
   handleTableChange = (pagination, filters, sorter) => {
     const pager = { ...this.state.pagination };
     pager.current = pagination.current;
     this.setState({
       pagination: pager,
     });
-    this.fetch({
+    this.refresh({
       results: pagination.pageSize,
       page: pagination.current,
       sortField: sorter.field,
@@ -41,39 +59,47 @@ class AccountList extends React.Component {
       ...filters,
     });
   }
-  fetch = (params = {}) => {
+  refresh = (params = {}) => {
     this.setState({ loading: true });
-    fetch({
-      url: 'https://randomuser.me/api',
-      method: 'get',
-      data: {
-        results: 10,
-        ...params,
+    const reqData = {
+      query: `{
+        userAccount {
+          id, account, email, 
+        }
+      }`,
+    };
+    fetch(
+      '/graphql',
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reqData),
+        credentials: 'same-origin',
       },
-      type: 'json',
-    }).then((data) => {
+    )
+    .then(response => response.json())
+    .then((response) => {
+      const data = response.data.userAccount;
       const pagination = { ...this.state.pagination };
       // Read total count from server
       // pagination.total = data.totalCount;
       pagination.total = 200;
       this.setState({
         loading: false,
-        data: data.results,
+        data,
         pagination,
       });
     });
   }
-  componentDidMount() {
-    console.log('do did mout');
-    this.fetch();
-  }
   render() {
     return (
       <div>
-        <h1>This is ALL in one</h1>
         <Table
           columns={columns}
-          rowKey={record => record.registered}
+          rowKey={record => record.id}
           dataSource={this.state.data}
           pagination={this.state.pagination}
           loading={this.state.loading}

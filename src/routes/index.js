@@ -27,6 +27,11 @@ const routes = {
     },
 
     {
+      path: '/account/detail',
+      load: () => import(/* webpackChunkName: 'account-detail' */ './account/detail'),
+    },
+
+    {
       path: '/login',
       load: () => import(/* webpackChunkName: 'login' */ './login'),
     },
